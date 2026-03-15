@@ -9,9 +9,14 @@ use Illuminate\Support\Facades\Log;
 
 class PokeApiClient
 {
-    private const BASE_URL = 'https://pokeapi.co/api/v2';
+    private string $baseUrl;
     private const CACHE_TTL_SECONDS = 300;
     private const TIMEOUT_SECONDS = 10;
+
+    public function __construct()
+    {
+        $this->baseUrl = config('services.pokeapi.base_url');
+    }
 
     /**
      * Get a paginated list of pokemons from the PokéAPI.
@@ -67,11 +72,15 @@ class PokeApiClient
      */
     private function request(string $endpoint, array $query = []): array
     {
-        $url = sprintf('%s/%s', self::BASE_URL, ltrim($endpoint, '/'));
+        $url = sprintf('%s/%s', $this->baseUrl, ltrim($endpoint, '/'));
 
         try {
             $response = Http::timeout(self::TIMEOUT_SECONDS)
+                ->retry(2, 200)
                 ->acceptJson()
+                ->withHeaders([
+                    'User-Agent' => 'Laravel-Pokedex-App'
+                ])
                 ->get($url, $query);
 
             $response->throw();
