@@ -1,59 +1,201 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Pokédex Laravel App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicação web desenvolvida em **Laravel** que consome a **PokéAPI**, permite importar Pokémons para um banco **MySQL**, favoritar Pokémons e gerenciar usuários com diferentes níveis de permissão.
 
-## About Laravel
+Este projeto foi desenvolvido como parte de um **desafio técnico para vaga de desenvolvedor Laravel Pleno**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Tecnologias utilizadas
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8+
+- Laravel 12
+- Blade
+- MySQL
+- PokéAPI
+- Git
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+# Funcionalidades
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Autenticação e permissões
 
-## Laravel Sponsors
+A aplicação possui três níveis de acesso:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Viewer
+- Pode visualizar Pokémon importados
+- Pode pesquisar Pokémon salvos no banco
 
-### Premium Partners
+### Editor
+- Pode importar Pokémon da PokéAPI
+- Pode favoritar Pokémon
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Admin
+- Pode gerenciar usuários
+- Pode alterar roles
+- Pode remover Pokémon importados
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Integração com PokéAPI
 
-## Code of Conduct
+A aplicação consome dados da **PokéAPI**:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+https://pokeapi.co/
 
-## Security Vulnerabilities
+A integração foi implementada através de um **service dedicado**:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`App\Services\PokeApiClient`
 
-## License
+Recursos implementados:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Cache de respostas da API
+- Retry automático em requisições
+- Timeout configurado
+- Logs de falha de integração
+
+---
+
+# Persistência de dados
+
+Pokémon importados são armazenados no banco de dados.
+
+Campos armazenados:
+
+- api_id
+- name
+- height
+- weight
+- sprite
+
+Relacionamentos:
+
+Pokemon ↔ Types (Many to Many)
+
+Também existe relacionamento para favoritos:
+
+User ↔ Pokemon (Favorites)
+
+---
+
+# Arquitetura do projeto
+
+O projeto segue uma organização baseada em separação de responsabilidades.
+
+Principais camadas:
+
+Controllers
+Services
+FormRequests
+Policies
+Blade Components
+
+Principais serviços:
+
+- `PokeApiClient`
+- `PokemonImporter`
+- `PokemonDashboardService`
+- `PokemonDetailsService`
+- `PokemonSearchService`
+- `FavoritePokemonService`
+- `FavoriteService`
+- `UserManagementService`
+
+---
+
+# Cache da API
+
+As respostas da PokéAPI são armazenadas em cache por **5 minutos** para melhorar performance e reduzir requisições externas.
+
+---
+
+# Logs de integração
+
+Falhas de comunicação com a PokéAPI são registradas em:
+
+storage/logs/laravel.log
+
+---
+
+## Requisitos
+
+- PHP 8.2+
+- Composer
+- MySQL
+
+---
+
+# Instalação do projeto
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/Breno-Philipe/pokedex.git
+```
+
+Entre na pasta do projeto:
+
+```bash
+cd pokedex
+```
+
+Instale as dependências:
+
+```bash
+composer install
+```
+
+---
+
+# Configuração do ambiente
+
+Copie o arquivo de ambiente:
+
+```bash
+cp .env.example .env
+```
+
+Crie o banco de dados e depois configure o mesmo no .env:
+
+Exemplo:
+
+DB_DATABASE=pokedex
+DB_USERNAME=root
+DB_PASSWORD=
+
+Gerar chave da aplicação:
+
+```bash
+php artisan key:generate
+```
+
+Executar migrations e seeders:
+
+```bash
+php artisan migrate --seed
+```
+
+Rodar a aplicação:
+
+```bash
+php artisan serv
+```
+
+---
+
+# Usuários de teste
+
+Após executar os seeders, os seguintes usuários estarão disponíveis:
+
+| Role   | Email              | Password |
+| ------ | ------------------ | -------- |
+| Admin  | [admin@email.com]  | 123456   |
+| Editor | [editor@email.com] | 123456   |
+| Viewer | [viewer@email.com] | 123456   |
+
+---
+
+# Recomendações finais
+
+É recomendado acessar primeiro com um usuário **editor** ou **admin**, pois o usuário **viewer** apenas visualiza Pokémons que já foram importados para o banco de dados.
