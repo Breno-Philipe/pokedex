@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PokemonController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\FavoritePokemonController;
+use App\Http\Controllers\PokemonController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth','verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
-    Route::get('/dashboard', [PokemonController::class,'index'])
+    Route::get('/dashboard', [PokemonController::class, 'index'])
         ->name('dashboard');
 
 });
@@ -21,7 +22,7 @@ Route::get('/pokemon/{pokemon}', [PokemonController::class, 'show'])
 /* Favorite Pokemon Page */
 Route::get('/favorites', [FavoritePokemonController::class, 'index'])
     ->name('pokemons.favorites')
-    ->middleware(['auth','can:favorite,App\Models\Pokemon']);
+    ->middleware(['auth', 'can:favorite,App\Models\Pokemon']);
 
 Route::middleware('auth')->group(function () {
 
@@ -39,16 +40,16 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:import,App\Models\Pokemon')
         ->group(function () {
 
-        Route::get('/import', [PokemonController::class,'importPage'])
-            ->name('pokemons.import');
+            Route::get('/import', [PokemonController::class, 'importPage'])
+                ->name('pokemons.import');
 
-        Route::post('/import/{name}', [PokemonController::class,'importOne'])
-            ->name('pokemons.import.one');
+            Route::post('/import/{name}', [PokemonController::class, 'importOne'])
+                ->name('pokemons.import.one');
 
-        Route::post('/import-batch', [PokemonController::class,'importBatch'])
-            ->name('pokemons.import.batch');
+            Route::post('/import-batch', [PokemonController::class, 'importBatch'])
+                ->name('pokemons.import.batch');
 
-    });
+        });
 
     /* Pokemon Delete Routes (Admin only) */
     Route::delete('/pokemons/{pokemon}', [PokemonController::class, 'destroy'])
@@ -60,9 +61,23 @@ Route::middleware('auth')->group(function () {
         ->middleware('can:deleteAll,App\Models\Pokemon');
 
     /* Favorites */
-    Route::post('/favorites/{pokemon}', [FavoriteController::class,'toggle'])
+    Route::post('/favorites/{pokemon}', [FavoriteController::class, 'toggle'])
         ->name('favorites.toggle');
+});
 
+Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::get('/users', [UserManagementController::class, 'index'])
+        ->name('users.index')
+        ->middleware('can:manageUsers,App\Models\User');
+
+    Route::patch('/users/{user}/role', [UserManagementController::class, 'updateRole'])
+        ->name('users.update.role')
+        ->middleware('can:manageUsers,App\Models\User');
+
+    Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])
+        ->name('users.destroy')
+        ->middleware('can:manageUsers,App\Models\User');
 });
 
 require __DIR__.'/auth.php';

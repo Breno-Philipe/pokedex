@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Pokemon::class => PokemonPolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**
