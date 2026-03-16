@@ -62,7 +62,12 @@ class PokeApiClient
     }
 
     /**
-     * Perform a GET request to the PokéAPI.
+     * Perform an HTTP GET request to the PokéAPI.
+     *
+     * Handles retries, timeouts and error logging.
+     * Any integration failure is logged and converted
+     * to a RuntimeException to avoid exposing internal errors
+     * to the user interface.
      *
      * @param string $endpoint
      * @param array<string, mixed> $query

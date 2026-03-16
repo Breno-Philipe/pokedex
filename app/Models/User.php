@@ -93,4 +93,12 @@ class User extends Authenticatable
     {
         return $this->role === 'viewer';
     }
+    
+    /**
+     * Determine whether the user can perform editor-level actions.
+     */
+    public function canEdit(): bool
+    {
+        return $this->isEditor() || $this->isAdmin();
+    }
 }

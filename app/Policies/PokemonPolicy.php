@@ -9,9 +9,8 @@ use App\Models\Pokemon;
  * Policy responsible for handling authorization rules
  * related to Pokémon actions within the application.
  *
- * This policy defines which user roles are allowed to perform
- * operations such as importing, deleting individual Pokémon,
- * or clearing the entire Pokémon dataset.
+ * Defines which user roles are allowed to perform actions
+ * such as importing Pokémon, managing favorites and deleting records.
  */
 class PokemonPolicy
 {
@@ -19,39 +18,38 @@ class PokemonPolicy
      * Determine whether the user can import Pokémon
      * from the PokéAPI into the local database.
      *
-     * Only users with the roles "editor" or "admin"
-     * are authorized to perform import operations.
+     * Only editors and administrators are allowed to perform
+     * import operations.
      *
      * @param User $user
      * @return bool
      */
     public function import(User $user): bool
     {
-        return in_array($user->role, ['editor', 'admin'], true);
+        return $user->canEdit();
     }
 
     /**
-     * Determine whether the user can favorite pokemons.
+     * Determine whether the user can mark Pokémon as favorites.
      *
-     * Only editors and administrators are allowed to mark
-     * pokemons as favorites.
+     * This feature is available only to editors and administrators.
      *
      * @param User $user
      * @return bool
      */
     public function favorite(User $user): bool
     {
-        return in_array($user->role, ['editor','admin'], true);
+        return $user->canEdit();
     }
 
     /**
      * Determine whether the user can delete a specific Pokémon.
      *
-     * This action is restricted to administrators.
+     * Only administrators are allowed to delete Pokémon records
+     * stored in the local database.
      *
-     * The Pokémon model is provided for compatibility with
-     * Laravel's Model Policy conventions and future rules
-     * that might depend on the specific Pokémon instance.
+     * The Pokémon model parameter is included to follow Laravel's
+     * model policy conventions and allow future rule expansion.
      *
      * @param User $user
      * @param Pokemon $pokemon
@@ -59,31 +57,20 @@ class PokemonPolicy
      */
     public function delete(User $user, Pokemon $pokemon): bool
     {
-        return $this->isAdmin($user);
+        return $user->isAdmin();
     }
 
     /**
      * Determine whether the user can delete all imported Pokémon.
      *
-     * This operation allows administrators to remove all
-     * Pokémon records stored in the database.
+     * This action clears the entire Pokémon dataset and therefore
+     * is restricted to administrators.
      *
      * @param User $user
      * @return bool
      */
     public function deleteAll(User $user): bool
     {
-        return $this->isAdmin($user);
-    }
-
-    /**
-     * Check if the user has administrator privileges.
-     *
-     * @param User $user
-     * @return bool
-     */
-    private function isAdmin(User $user): bool
-    {
-        return $user->role === 'admin';
+        return $user->isAdmin();
     }
 }

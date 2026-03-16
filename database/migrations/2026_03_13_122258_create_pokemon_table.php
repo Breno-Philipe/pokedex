@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pokemon', function (Blueprint $table) {
             $table->id();
             $table->integer('api_id')->unique();
-            $table->string('name');
+            $table->string('name')->index();
             $table->integer('height');
             $table->integer('weight');
             $table->string('sprite')->nullable();

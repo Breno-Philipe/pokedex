@@ -20,6 +20,8 @@ class UserManagementService
      */
     public function updateRole(User $user, string $role): void
     {
+        if ($user->id === auth()->id()) {return;}
+
         $user->update([
             'role' => $role
         ]);
@@ -30,6 +32,8 @@ class UserManagementService
      */
     public function deleteUser(User $user): void
     {
+        if ($user->id === auth()->id()) {return;}
+        
         $user->delete();
     }
 }

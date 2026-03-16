@@ -9,6 +9,8 @@ use App\Services\PokemonDashboardService;
 use App\Services\PokemonDetailsService;
 use App\Services\PokemonImporter;
 use App\Services\PokemonSearchService;
+use App\Http\Requests\ImportPokemonRequest;
+use App\Http\Requests\BatchImportPokemonRequest;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -137,14 +139,18 @@ class PokemonController extends Controller
     /**
      * Import a single Pokémon from the PokéAPI.
      *
-     * Retrieves Pokémon data from the external API and
-     * stores it locally using the PokemonImporter service.
+     * Retrieves the Pokémon name from the validated request and
+     * fetches its data from the PokéAPI using the PokeApiClient.
+     * The retrieved data is then persisted locally using the
+     * PokemonImporter service.
      *
-     * @param string $name
+     * @param ImportPokemonRequest $request
      * @return RedirectResponse
      */
-    public function importOne(string $name): RedirectResponse
+    public function importOne(ImportPokemonRequest $request): RedirectResponse
     {
+        $name = $request->pokemonName();
+
         $data = $this->pokeApiClient->getPokemonByName($name);
 
         $this->pokemonImporter->import($data);
@@ -155,15 +161,15 @@ class PokemonController extends Controller
     /**
      * Import multiple Pokémon from the current API page.
      *
-     * Receives a list of Pokémon names from the request
+     * Receives a validated list of Pokémon names from the request
      * and imports each one using the PokemonImporter service.
      *
-     * @param Request $request
+     * @param BatchImportPokemonRequest $request
      * @return RedirectResponse
      */
-    public function importBatch(Request $request)
+    public function importBatch(BatchImportPokemonRequest $request): RedirectResponse
     {
-        $names = $request->input('names', []);
+        $names = $request->validated()['names'];
 
         foreach ($names as $name) {
 
@@ -172,7 +178,7 @@ class PokemonController extends Controller
             $this->pokemonImporter->import($data);
         }
 
-        return back()->with('success','Pokemons importados com sucesso.');
+        return back()->with('success', 'Pokemons importados com sucesso.');
     }
 
     /**
