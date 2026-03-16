@@ -7,21 +7,25 @@ use App\Models\Type;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Service responsible for importing Pokémon data from the PokéAPI
- * and persisting it in the local database.
+ * Service responsible for importing Pokémon data retrieved
+ * from the PokéAPI and persisting it into the local database.
  *
  * This service ensures data consistency by:
- * - avoiding duplication using updateOrCreate
- * - creating missing types
- * - syncing many-to-many relationships
- * - wrapping the operation inside a database transaction
+ * - avoiding duplicated Pokémon using updateOrCreate
+ * - creating missing Pokémon types if they do not exist
+ * - synchronizing the Pokémon ↔ Types relationship
+ * - executing the operation inside a database transaction
+ *
+ * The service expects a payload compatible with the structure
+ * returned by the PokéAPI endpoint:
+ * https://pokeapi.co/api/v2/pokemon/{name}
  */
 class PokemonImporter
 {
     /**
-     * Import a Pokémon from the PokéAPI payload.
+     * Import a Pokémon using the PokéAPI response payload.
      *
-     * Expected payload structure:
+     * Expected payload structure (simplified):
      *
      * [
      *   'id' => int,
@@ -29,7 +33,11 @@ class PokemonImporter
      *   'height' => int,
      *   'weight' => int,
      *   'sprites' => [
-     *       'front_default' => string|null
+     *       'other' => [
+     *           'official-artwork' => [
+     *               'front_default' => string|null
+     *           ]
+     *       ]
      *   ],
      *   'types' => [
      *       [
@@ -40,7 +48,12 @@ class PokemonImporter
      *   ]
      * ]
      *
-     * @param array<string, mixed> $data
+     * The operation is executed within a database transaction
+     * to ensure that Pokémon and its related types are persisted
+     * atomically.
+     *
+     * @param array<string,mixed> $data PokéAPI response payload
+     *
      * @return Pokemon
      */
     public function import(array $data): Pokemon

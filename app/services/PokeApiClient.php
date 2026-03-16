@@ -27,7 +27,7 @@ class PokeApiClient
      *
      * @throws \RuntimeException
      */
-    public function listPokemons(int $limit = 20, int $offset = 0): array
+    public function listPokemons(int $limit = 18, int $offset = 0): array
     {
         $cacheKey = "pokeapi.pokemons.list.{$limit}.{$offset}";
 
