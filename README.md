@@ -160,9 +160,11 @@ Crie o banco de dados e depois configure o mesmo no .env:
 
 Exemplo:
 
+```bash
 DB_DATABASE=pokedex
 DB_USERNAME=root
 DB_PASSWORD=
+```
 
 Gerar chave da aplicação:
 
@@ -188,11 +190,11 @@ php artisan serv
 
 Após executar os seeders, os seguintes usuários estarão disponíveis:
 
-| Role   | Email              | Password |
-| ------ | ------------------ | -------- |
-| Admin  | [admin@email.com]  | 123456   |
-| Editor | [editor@email.com] | 123456   |
-| Viewer | [viewer@email.com] | 123456   |
+| Role   | Email            | Password |
+| ------ | ---------------- | -------- |
+| Admin  | admin@email.com  | 123456   |
+| Editor | editor@email.com | 123456   |
+| Viewer | viewer@email.com | 123456   |
 
 ---
 
