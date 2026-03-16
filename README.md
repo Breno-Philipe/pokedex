@@ -560,6 +560,18 @@ Executar migrations e seeders:
 php artisan migrate --seed
 ```
 
+Instale as dependencias do node:
+
+```bash
+npm install
+```
+
+Rode o vite:
+
+```bash
+npm run dev
+```
+
 Rodar a aplicação:
 
 ```bash
