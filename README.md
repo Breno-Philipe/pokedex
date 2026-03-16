@@ -71,11 +71,11 @@ Campos armazenados:
 
 Relacionamentos:
 
-Pokemon ↔ Types (Many to Many)
+`Pokemon ↔ Types (Many to Many)`
 
 Também existe relacionamento para favoritos:
 
-User ↔ Pokemon (Favorites)
+`User ↔ Pokemon (Favorites)`
 
 ---
 
@@ -114,7 +114,7 @@ As respostas da PokéAPI são armazenadas em cache por **5 minutos** para melhor
 
 Falhas de comunicação com a PokéAPI são registradas em:
 
-storage/logs/laravel.log
+`storage/logs/laravel.log`
 
 ---
 
