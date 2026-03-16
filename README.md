@@ -571,6 +571,10 @@ Rode o vite:
 ```bash
 npm run dev
 ```
+or
+```bash
+npm run build
+```
 
 Rodar a aplicação:
 
