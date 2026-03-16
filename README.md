@@ -127,6 +127,389 @@ Falhas de comunicação com a PokéAPI são registradas em:
 ---
 
 # Instalação do projeto
+Caso não possua instalado os requisitos, recomendo o uso da ferramenta xampp para instalar o PHP e o MySQL.
+O XAMPP fornece o ambiente local com **Apache**, **PHP** e **MySQL** necessários para executar o projeto.
+
+# Windows
+
+`Baixar o XAMPP`
+
+Acesse o site oficial:
+
+https://www.apachefriends.org/index.html
+
+Baixe a versão para **Windows**.
+
+`Instalar`
+
+1. Execute o instalador (`xampp-installer.exe`)
+2. Clique em **Next**
+3. Selecione os componentes:
+
+```
+✔ Apache
+✔ MySQL
+✔ PHP
+```
+
+(os demais são opcionais)
+
+4. Escolha o diretório de instalação (recomendado):
+
+```
+C:\xampp
+```
+
+5. Finalize a instalação.
+
+`Iniciar serviços`
+
+Abra o **XAMPP Control Panel** e clique em:
+
+```
+Start → Apache
+Start → MySQL
+```
+
+`Testar instalação`
+
+Abra no navegador:
+
+```
+http://localhost
+```
+
+Se aparecer a página do XAMPP, está funcionando ✅
+
+# Linux
+
+`Baixar o XAMPP`
+
+```bash
+wget https://www.apachefriends.org/xampp-files/latest/xampp-linux-x64-installer.run
+```
+
+`Dar permissão de execução`
+
+```bash
+chmod +x xampp-linux-x64-installer.run
+```
+
+`Executar instalador`
+
+```bash
+sudo ./xampp-linux-x64-installer.run
+```
+
+Siga os passos do instalador gráfico.
+
+`Iniciar serviços`
+
+```bash
+sudo /opt/lampp/lampp start
+```
+
+`Testar`
+
+Abra no navegador:
+
+```
+http://localhost
+```
+
+---
+
+# macOS
+
+`Baixar o XAMPP`
+
+Acesse:
+
+https://www.apachefriends.org/index.html
+
+Baixe a versão para **macOS**.
+
+---
+
+`Instalar`
+
+1. Abra o arquivo `.dmg`
+2. Arraste o **XAMPP** para a pasta **Applications**
+3. Abra o aplicativo XAMPP.
+
+---
+
+`Iniciar serviços`
+
+Na aba **Manage Servers**, inicie:
+
+```
+Start → Apache Web Server
+Start → MySQL Database
+```
+
+
+`Testar`
+
+Abra:
+
+```
+http://localhost
+```
+
+# Diretório dos projetos
+
+Coloque o projeto na pasta:
+
+```
+Windows: C:\xampp\htdocs
+Linux:   /opt/lampp/htdocs
+macOS:   /Applications/XAMPP/htdocs
+```
+
+Exemplo:
+
+```
+htdocs/meu-projeto
+```
+
+Acesse:
+
+```
+http://localhost/meu-projeto
+```
+
+---
+
+# Problemas comuns
+
+- Porta 80 ocupada → fechar IIS/Skype/Apache antigo
+- Firewall bloqueando Apache
+- Executar XAMPP como administrador (Windows)
+
+Após instalar o xampp será necessário configurar a variável de ambiente **PATH**:
+
+# Windows
+
+`Localize a pasta do PHP`
+
+Exemplos comuns:
+
+```bash
+C:\php
+C:\xampp\php
+C:\laragon\bin\php\php-8.x.x
+```
+
+`Adicionar ao PATH`
+
+1. Abra o menu iniciar e pesquise por:
+   ```bash
+   variáveis de ambiente
+   ```
+2. Clique em **Editar variáveis de ambiente do sistema**
+3. Clique em **Variáveis de Ambiente**
+4. Em **Variáveis do sistema**, selecione **Path**
+5. Clique em **Editar**
+6. Clique em **Novo**
+7. Adicione o caminho da pasta do PHP, por exemplo:
+   ```
+   C:\xampp\php
+   ```
+8. Clique em **OK** em todas as janelas.
+
+`Reinicie o terminal`
+
+Feche e abra o terminal novamente.
+
+`Verificar`
+
+```bash
+php -v
+```
+
+---
+
+# Linux
+
+`Verificar instalação do PHP`
+
+```bash
+php -v
+```
+
+Se não estiver instalado:
+
+```bash
+sudo apt update
+sudo apt install php
+```
+
+`Descobrir caminho do PHP`
+
+```bash
+which php
+```
+
+Exemplo de retorno:
+
+```
+/usr/bin/php
+```
+
+`Adicionar ao PATH (caso necessário)`
+
+Abra o arquivo:
+
+```bash
+nano ~/.bashrc
+```
+
+Adicione no final:
+
+```bash
+export PATH="$PATH:/usr/bin"
+```
+
+Aplicar alterações:
+
+```bash
+source ~/.bashrc
+```
+
+`Verificar`
+
+```bash
+php -v
+```
+
+---
+
+# macOS
+
+`Instalar PHP (via Homebrew)`
+
+```bash
+brew install php
+```
+
+`Adicionar ao PATH`
+
+```bash
+echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+`Verificar`
+
+```bash
+php -v
+```
+
+---
+
+Após configurar o php você deve instalar o composer.
+O Composer é o gerenciador de dependências do PHP utilizado neste projeto.
+
+#Windows
+
+`Baixar o instalador`
+
+Acesse:
+
+https://getcomposer.org/download/
+
+Baixe o **Composer-Setup.exe**.
+
+`Executar instalação`
+
+1. Execute o instalador.
+2. Quando solicitado, selecione o caminho do PHP, por exemplo:
+
+```bash
+C:\xampp\php\php.exe
+```
+
+3. Continue a instalação normalmente.
+
+O instalador adicionará o Composer ao PATH automaticamente.
+
+`Verificar instalação`
+
+Abra um novo terminal e execute:
+
+```bash
+composer -V
+```
+
+# Linux
+
+`Baixar o Composer`
+
+```bash
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+```
+
+`Instalar`
+
+```bash
+php composer-setup.php
+```
+
+`Mover para uso global`
+
+```bash
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+`Verificar instalação`
+
+```bash
+composer -V
+```
+
+# macOS
+
+`Instalar via Homebrew (recomendado)`
+
+```bash
+brew install composer
+```
+
+`Verificar instalação`
+
+```bash
+composer -V
+```
+
+---
+
+## ✅ Testar funcionamento
+
+Dentro do projeto execute:
+
+```bash
+composer install
+```
+
+Isso instalará todas as dependências do projeto.
+
+---
+
+## ⚠️ Problemas comuns
+
+Se o comando não for reconhecido:
+
+- Reinicie o terminal
+- Verifique se o PHP está no PATH
+- Execute:
+
+```bash
+composer diagnose
+```
+
+
+---
 
 Clone o repositório:
 
