@@ -179,7 +179,7 @@ Abra no navegador:
 http://localhost
 ```
 
-Se aparecer a página do XAMPP, está funcionando ✅
+Se aparecer a página do XAMPP, está funcionando
 
 # Linux
 
@@ -484,7 +484,7 @@ composer -V
 
 ---
 
-## ✅ Testar funcionamento
+`Testar funcionamento`
 
 Dentro do projeto execute:
 
@@ -496,7 +496,7 @@ Isso instalará todas as dependências do projeto.
 
 ---
 
-## ⚠️ Problemas comuns
+`Problemas comuns`
 
 Se o comando não for reconhecido:
 
@@ -507,7 +507,6 @@ Se o comando não for reconhecido:
 ```bash
 composer diagnose
 ```
-
 
 ---
 
