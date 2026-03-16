@@ -22,6 +22,11 @@
             <button class="px-4 py-2 bg-red-600 text-white rounded" onclick="return confirm('Tem certeza que deseja apagar TODOS os pokémons?')">Apagar todos</button>
           </form>
         @endcan
+        {{-- Filter input --}}
+        <form method="GET" action="{{ route('dashboard') }}" class="flex gap-2">
+          <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Buscar Pokémon" class="border rounded px-3 py-2">
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Buscar</button>
+        </form>
       </div>
       {{-- empty state --}}
       @if ($pokemons->isEmpty())
@@ -38,7 +43,7 @@
           @endforeach
         </div>
         {{-- pagination --}}
-        <div class="mt-6 flex justify-center">{{ $pokemons->links() }}</div>
+        <div class="mt-6 flex justify-center">{{ $pokemons->appends(['search' => $search])->links() }}</div>
       @endif
     </div>
   </div>

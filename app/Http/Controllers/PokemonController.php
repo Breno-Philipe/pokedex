@@ -48,7 +48,8 @@ class PokemonController extends Controller
      * Display the main Pokédex dashboard.
      *
      * Retrieves locally imported Pokémon from the database using the
-     * PokemonDashboardService and displays them paginated.
+     * PokemonDashboardService and displays them paginated
+     * with optional search filtering by name.
      *
      * Each Pokémon includes its associated types and a computed
      * attribute indicating whether it is favorited by the
@@ -56,15 +57,18 @@ class PokemonController extends Controller
      *
      * @return View
      */
-    public function index(): View
+    public function index(Request $request): View
     {
         $user = auth()->user();
 
+        $search = trim((string) $request->get('search'));
+
         $pokemons = $this->pokemonDashboardService
-            ->getPokemons($user, self::PAGE_SIZE);
+            ->getPokemons($user, self::PAGE_SIZE, $search);
 
         return view('pokemons.dashboard', [
-            'pokemons' => $pokemons
+            'pokemons' => $pokemons,
+            'search' => $search
         ]);
     }
 
