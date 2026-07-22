@@ -2,8 +2,6 @@
 
 Aplicação web desenvolvida em **Laravel** que consome a **PokéAPI**, permite importar Pokémons para um banco **MySQL**, favoritar Pokémons e gerenciar usuários com diferentes níveis de permissão.
 
-Este projeto foi desenvolvido como parte de um **desafio técnico para vaga de desenvolvedor Laravel Pleno**.
-
 ---
 
 # Tecnologias utilizadas
